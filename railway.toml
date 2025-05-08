@@ -1,0 +1,37 @@
+# railway.toml for Node.js Express Backend (elite-prazer-backend)
+
+[build]
+  # Railway will use this Dockerfile to build the application.
+  # Ensure your Dockerfile is correctly configured for a Node.js production build.
+  builder = "dockerfile"
+  dockerfilePath = "Dockerfile"
+  # Se você tiver um script de build específico no seu package.json (além da instalação de dependências),
+  # como transpilação de TypeScript, você pode especificá-lo aqui, mas geralmente `npm ci` ou `pnpm install` no Dockerfile é suficiente.
+  # buildCommand = "npm run build"
+
+[deploy]
+  # O comando start é definido no CMD do Dockerfile ("npm start")
+  # startCommand = "npm start"
+  
+  # Railway injetará a variável PORT. Certifique-se que sua aplicação escuta em process.env.PORT.
+  # healthCheckPath: Defina um endpoint que retorne 200 OK para verificações de saúde.
+  # Exemplo: se você tiver uma rota GET /health, use healthCheckPath = "/health"
+  healthCheckPath = "/api/health" # Exemplo, crie esta rota no seu app Express
+  healthcheckTimeout = 300 # seconds
+
+[environments.production]
+  NODE_ENV = "production"
+  # Defina aqui suas variáveis de ambiente de produção
+  # Exemplo: DATABASE_URL = "mongodb+srv://user:pass@cluster.mongodb.net/dbname"
+  # API_KEY = "your_production_api_key"
+  # JWT_SECRET = "seu_super_secreto_jwt_para_producao"
+  # MERCADOPAGO_ACCESS_TOKEN = "seu_access_token_de_producao_do_mercado_pago"
+
+[environments.staging]
+  NODE_ENV = "development" # Ou 'production' se o staging for idêntico
+  # Defina aqui suas variáveis de ambiente de staging
+  # Exemplo: DATABASE_URL = "mongodb+srv://user:pass@stagingcluster.mongodb.net/dbname_staging"
+  # API_KEY = "your_staging_api_key"
+  # JWT_SECRET = "seu_super_secreto_jwt_para_staging"
+  # MERCADOPAGO_ACCESS_TOKEN = "seu_access_token_de_teste_do_mercado_pago"
+
